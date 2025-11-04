@@ -1,0 +1,34 @@
+name: Deploy Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '选择要部署的环境'
+        required: true
+        default: 'uat'
+        type: choice
+        options:
+          - uat
+          - prod
+          - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 显示选择的环境
+        run: echo "你选择的环境是：${{ github.event.inputs.environment }}"
+
+      - name: 部署到对应环境
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "uat" ]; then
+            echo "部署到 UAT 环境..."
+            # 执行 UAT 环境的部署逻辑
+          elif [ "${{ github.event.inputs.environment }}" = "prod" ]; then
+            echo "部署到 PROD 环境..."
+            # 执行 PROD 环境的部署逻辑
+          else
+            echo "部署到 STAGING 环境..."
+          fi
