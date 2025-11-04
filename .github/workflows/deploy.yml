@@ -21,6 +21,11 @@ jobs:
       - name: 显示选择的环境
         run: echo "你选择的环境是：${{ github.event.inputs.environment }}"
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: 获取最新 Tag
         id: get_tag
         run: |
