@@ -24,24 +24,32 @@ jobs:
       - name: 获取最新 Tag
         id: get_tag
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            VERSION="${GITHUB_REF#refs/tags/v}"
-            BUILD_NUMBER="$VERSION.${{ github.run_id }}"
-            IS_RELEASE="true"
-          else
-            LATEST_TAG=$(git rag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
-            if [[ -z "$LATEST_TAG" ]]; then
-              LATEST_TAG="v0.0.0"
-              echo "未找到最新 Tag，使用默认版本 $LATEST_TAG"
-            else
-              echo "最新 Tag 为 $LATEST_TAG"
-            fi
-            
-            echo "Version: ${VERSION}"
-            echo "Build Number: ${BUILD_NUMBER}"
-            echo "Is Release: ${IS_RELEASE}"
-            echo "Branch: ${{ github.ref_name }}"
-            echo "Commit SHA: ${{ github.sha }}"
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          BUILD_NUMBER="$VERSION.${{ github.run_id }}"
+          IS_RELEASE="true"
+          echo "最新 Tag 为 $LATEST_TAG"
+          echo "Version: ${VERSION}"
+          echo "Build Number: ${BUILD_NUMBER}"
+          echo "Is Release: ${IS_RELEASE}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          
+#          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+#
+#          else
+#            LATEST_TAG=$(git rag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
+#            if [[ -z "$LATEST_TAG" ]]; then
+#              LATEST_TAG="v0.0.0"
+#              echo "未找到最新 Tag，使用默认版本 $LATEST_TAG"
+#            else
+#              echo "最新 Tag 为 $LATEST_TAG"
+#            fi
+#
+#            echo "Version: ${VERSION}"
+#            echo "Build Number: ${BUILD_NUMBER}"
+#            echo "Is Release: ${IS_RELEASE}"
+#            echo "Branch: ${{ github.ref_name }}"
+#            echo "Commit SHA: ${{ github.sha }}"
 
       - name: 部署到对应环境
         run: |
