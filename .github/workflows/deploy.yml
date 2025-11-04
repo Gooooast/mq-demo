@@ -31,7 +31,8 @@ jobs:
         run: |
           latest_tag=$(git describe --tags --abbrev=0)
           echo "最新的 tag 是: $latest_tag"
-          LATEST_TAG=$(git rag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
+          LATEST_TAG=$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
+          
           if [[ -z "$LATEST_TAG" ]]; then
             LATEST_TAG="v0.0.0"
             echo "未找到最新 Tag，使用默认版本 $LATEST_TAG"
@@ -40,6 +41,8 @@ jobs:
           fi
           
           VERSION=${LATEST_TAG#v}
+          BUILD_NUMBER="$VERSION.${{ github.run_id }}"
+          IS_RELEASE="true"
 
           echo "Version: ${VERSION}"
           echo "Build Number: ${BUILD_NUMBER}"
